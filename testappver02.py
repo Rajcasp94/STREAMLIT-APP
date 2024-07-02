@@ -66,6 +66,7 @@ def extract_pat(ecg_signal, ppg_signal, ecg_time, ppg_time):
 st.title('Get your PAT')
 
 
+process = 0
 
 while(1):
     try:
@@ -94,28 +95,3 @@ while(1):
 
         st.write('Mean is', mean)
             
-
-
-
-user_input = 1
-    
-        
-    
-if user_input == 1:
-    st.write(df)
-    sample_rate = st.number_input('Sampling rate (Hz)')
-
-
-    if sample_rate!= 0: 
-        st.write('sample rate is', sample_rate)
-    else:
-        st.write('Enter Sample Rate')
-
-
-    st.write('ready for processing')
-
-    mean = df['ecg'].mean()
-
-    st.write('Mean is', mean)
-else:
-    st.write('nothing to display')
