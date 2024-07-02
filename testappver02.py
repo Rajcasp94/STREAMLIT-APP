@@ -67,61 +67,58 @@ st.title('Get your PAT')
 
 
 process = 0
+sample_rate = 500
+window_size = 10
+key_count = 1
+url = 'https://drive.google.com/file/d/1KS7hzbS-PNsTUylNGOtthG8ay8lUzBpg/view?usp=sharing'
 
-while(1):
-    try:
-        url = st.text_input('Enter File LInk', key = 1)
-        file_id=url.split('/')[-2]
-        dwn_url='https://drive.google.com/uc?id=' + file_id
-        df_record = pd.read_csv(dwn_url)
-        process = 1
-    except:
-        pass
-    
-    if process == 1:
-        sample_rate = st.number_input('Sampling rate (Hz)', key == 2)
+url = st.text_input('Enter File LInk', key = key_count)
+key_count = key_count + 1
+file_id=url.split('/')[-2]
+dwn_url='https://drive.google.com/uc?id=' + file_id
+df_record = pd.read_csv(dwn_url)
 
-        if sample_rate!= 0: 
-            st.write('sample rate is', sample_rate)
-        else:
-            st.write('Enter Sample Rate')
+
+sample_rate = st.number_input('Sampling rate (Hz)', value = 500, key = key_count)
+key_count = key_count + 1
             
-        total_duration =  int(len(df_record)/(sample_rate*60))
+total_duration =  int(len(df_record)/(sample_rate*60))
 
-        st.write('total recording duration is', total_duration, "minutes")
+st.write('total recording duration is', total_duration, "minutes")
         
-        start = 0
-        end = int(window_size*sample_rate)
-        overlap = end
-
-        pat_list = []
-
-        while end < len(df_record):
-            df_temp = df_record[start:end]
-            ecg_filtered =  butterworth(df_temp['ecg'],3,[2,30],500,'bandpass')
-            ppg_filtered =  butterworth(df_temp['ppg'],3,[0.75,5],500,'bandpass')
-            ecg_filtered = normalize(ecg_filtered)
-            ppg_filtered = normalize(ppg_filtered)
-            ecg_time = np.arange(start,end,1)
-            ppg_time = np.arange(start,end,1)
-            segment_pat = extract_pat(ecg_filtered, ppg_filtered, ecg_time, ppg_time)
-            pat_list = pat_list + segment_pat
-            start = start + overlap
-            end = end + overlap
-
-        st.write('total recording duration is', total_duration, "minutes")
-
-        result = pd.DataFrame({
-            'PAT': pat_list})
+window_size = st.number_input('Enter the window size in seconds', value = 10, key = key_count)
+key_count = key_count + 1
         
-        result['PAT'] = result['PAT']*1000
+start = 0
+end = int(window_size*sample_rate)
+overlap = end
 
-        result = result.rolling(window=int(len(result)/8)).median()
-        result = result.dropna()
+pat_list = []
 
-        st.write('PAT dataframe', result)
+while end < len(df_record):
+    df_temp = df_record[start:end]
+    ecg_filtered =  butterworth(df_temp['ecg'],3,[2,30],500,'bandpass')
+    ppg_filtered =  butterworth(df_temp['ppg'],3,[0.75,5],500,'bandpass')
+    ecg_filtered = normalize(ecg_filtered)
+    ppg_filtered = normalize(ppg_filtered)
+    ecg_time = np.arange(start,end,1)
+    ppg_time = np.arange(start,end,1)
+    segment_pat = extract_pat(ecg_filtered, ppg_filtered, ecg_time, ppg_time)
+    pat_list = pat_list + segment_pat
+    start = start + overlap
+    end = end + overlap
 
-        st.line_chart(data = result, y = 'PAT')
+st.write('total recording duration is', total_duration, "minutes")
 
-
+result = pd.DataFrame({'PAT': pat_list})
         
+result['PAT'] = result['PAT']*1000
+
+result = result.rolling(window=int(len(result)/8)).median()
+result = result.dropna()
+
+st.write('PAT dataframe', result)
+
+st.line_chart(data = result, y = 'PAT')
+
+
