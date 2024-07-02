@@ -64,7 +64,7 @@ st.title('Get your PAT')
 
 
 
-url = 'https://drive.google.com/file/d/1KS7hzbS-PNsTUylNGOtthG8ay8lUzBpg/view?usp=sharing'
+url = st.text_input('Enter the file link')
 path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
 
 st.write(path)
@@ -85,3 +85,7 @@ else:
 
 
 st.write('ready for processing')
+
+mean = df['ecg'].mean()
+
+st.write('Mean is', mean)
