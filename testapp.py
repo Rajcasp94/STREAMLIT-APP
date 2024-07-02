@@ -3,10 +3,11 @@ import pandas as pd
 import numpy as np
 
 #import neurokit2 as nk
-from scipy.signal import find_peaks, medfilt
+import scipy
+#from scipy.signal import find_peaks, medfilt
 #import neurokit2 as nk
 from statistics import mode
-import scipy.signal as signal
+#import scipy.signal as signal
 from scipy import stats
 
 
@@ -16,19 +17,19 @@ def normalize(dataframe):
 def butterworth(raw_signal,n,desired_cutoff,sample_rate,btype):
     if(btype=='high' or btype=='low'):
         critical_frequency=(2*desired_cutoff)/sample_rate
-        B, A = signal.butter(n, critical_frequency, btype=btype, output='ba')
+        B, A = scipy.signal.butter(n, critical_frequency, btype=btype, output='ba')
     elif(btype=='bandpass'):
         critical_frequency_1=(2*desired_cutoff[0])/sample_rate
         critical_frequency_2=(2*desired_cutoff[1])/sample_rate
-        B, A = signal.butter(n, [critical_frequency_1,critical_frequency_2], btype=btype, output='ba')
-    filtered_signal = signal.filtfilt(B,A, raw_signal)
+        B, A = scipy.signal.butter(n, [critical_frequency_1,critical_frequency_2], btype=btype, output='ba')
+    filtered_signal = scipy.signal.filtfilt(B,A, raw_signal)
     return filtered_signal
     
 def extract_pat(ecg_signal, ppg_signal, ecg_time, ppg_time):
     pat = []
     #signals, info = nk.ecg_peaks(ecg_signal, sampling_rate = 500)
-    ecg_peaks, _ = find_peaks(ecg_signal, distance = 200)
-    ppg_peaks, _ = find_peaks(ppg_signal, distance = 200)
+    ecg_peaks, _ = scipy.signal.find_peaks(ecg_signal, distance = 200)
+    ppg_peaks, _ = scipy.signal.find_peaks(ppg_signal, distance = 200)
     #st.write('length of the peak is',ecg_peaks)
     #ecg_peaks = list(info.values())[0]
     ecg_peak_times = [ecg_time[e] for e in ecg_peaks]
