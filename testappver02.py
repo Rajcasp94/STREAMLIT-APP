@@ -10,6 +10,9 @@ from statistics import mode
 #import scipy.signal as signal
 from scipy import stats
 
+import requests
+from io import StringIO
+
 
 def normalize(dataframe):
     dataframe = (dataframe - dataframe.min()) / (dataframe.max() - dataframe.min()) 
@@ -63,18 +66,39 @@ def extract_pat(ecg_signal, ppg_signal, ecg_time, ppg_time):
 st.title('Get your PAT')
 
 
-url = st.text_input('Enter the file link')
 
-user_input = 0
-
-
-while user_input == 0:
+while(1):
     try:
-        path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
-        df = pd.read_csv(path, on_bad_lines='skip')
-        user_input = 1
+        url = st.text_input('Enter File LInk')
+        file_id=url.split('/')[-2]
+        dwn_url='https://drive.google.com/uc?id=' + file_id
+        df = pd.read_csv(dwn_url)
+        process = 1
     except:
-        continue
+        pass
+    
+    if process == 1:
+        st.write(df)
+        sample_rate = st.number_input('Sampling rate (Hz)')
+
+
+        if sample_rate!= 0: 
+            st.write('sample rate is', sample_rate)
+        else:
+            st.write('Enter Sample Rate')
+
+
+        st.write('ready for processing')
+
+        mean = df['ecg'].mean()
+
+        st.write('Mean is', mean)
+            
+
+
+
+user_input = 1
+    
         
     
 if user_input == 1:
@@ -93,3 +117,5 @@ if user_input == 1:
     mean = df['ecg'].mean()
 
     st.write('Mean is', mean)
+else:
+    st.write('nothing to display')
