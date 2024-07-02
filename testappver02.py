@@ -11,7 +11,7 @@ from statistics import mode
 from scipy import stats
 
 
-ef normalize(dataframe):
+def normalize(dataframe):
     dataframe = (dataframe - dataframe.min()) / (dataframe.max() - dataframe.min()) 
     return dataframe
 def butterworth(raw_signal,n,desired_cutoff,sample_rate,btype):
