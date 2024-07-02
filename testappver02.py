@@ -62,9 +62,14 @@ def extract_pat(ecg_signal, ppg_signal, ecg_time, ppg_time):
 
 st.title('Get your PAT')
 
-url = 'https://drive.google.com/file/d/1KS7hzbS-PNsTUylNGOtthG8ay8lUzBpg/view?usp=drive_link'
+
+
+url = 'https://drive.google.com/file/d/1KS7hzbS-PNsTUylNGOtthG8ay8lUzBpg/view?usp=sharing'
 path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
-df = pd.read_csv(path)
+
+st.write(path)
+
+df = pd.read_csv(path, on_bad_lines='skip')
 
 
 
