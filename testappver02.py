@@ -63,29 +63,32 @@ def extract_pat(ecg_signal, ppg_signal, ecg_time, ppg_time):
 st.title('Get your PAT')
 
 
-
 url = st.text_input('Enter the file link')
-path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
 
-st.write(path)
-
-df = pd.read_csv(path, on_bad_lines='skip')
+user_input = 0
 
 
+while user_input == 0:
+    try:
+        path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
+        df = pd.read_csv(path, on_bad_lines='skip')
+        user_input = 1
+    except:
+        continue
+        
+    
+if user_input == 1:
+    sample_rate = st.number_input('Sampling rate (Hz)')
 
 
-
-sample_rate = st.number_input('Sampling rate (Hz)')
-
-
-if sample_rate!= 0: 
-    st.write('sample rate is', sample_rate)
-else:
-    st.write('Enter Sample Rate')
+    if sample_rate!= 0: 
+        st.write('sample rate is', sample_rate)
+    else:
+        st.write('Enter Sample Rate')
 
 
-st.write('ready for processing')
+    st.write('ready for processing')
 
-mean = df['ecg'].mean()
+    mean = df['ecg'].mean()
 
-st.write('Mean is', mean)
+    st.write('Mean is', mean)
