@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-import neurokit2 as nk
+#import neurokit2 as nk
 from scipy.signal import find_peaks, medfilt
-import neurokit2 as nk
+#import neurokit2 as nk
 from statistics import mode
 import scipy.signal as signal
 from scipy import stats
