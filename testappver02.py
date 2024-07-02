@@ -62,18 +62,12 @@ def extract_pat(ecg_signal, ppg_signal, ecg_time, ppg_time):
 
 st.title('Get your PAT')
 
+url = 'https://drive.google.com/file/d/1KS7hzbS-PNsTUylNGOtthG8ay8lUzBpg/view?usp=drive_link'
+path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
+df = pd.read_csv(path)
 
 
-input_directory = st.text_input('Your data directory')
 
-temp_str = input_directory.split("'\'")
-
-data_directory = ''
-for strs in temp_str:
-    data_directory = data_directory + strs + "\\"
-
-
-filename = data_directory + '\\' + st.text_input('Filename')
 
 
 sample_rate = st.number_input('Sampling rate (Hz)')
@@ -84,15 +78,5 @@ if sample_rate!= 0:
 else:
     st.write('Enter Sample Rate')
 
- 
-i = 0
 
-while i == 0:
-    try:
-        df_record = pd.read_csv(filename)
-        st.write('data loaded')
-        i = 1
-    except:
-        pass
- 
 st.write('ready for processing')
