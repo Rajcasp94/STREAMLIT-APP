@@ -14,4 +14,10 @@ st.title('Get your PAT')
 
 sample_rate = st.number_input('Sampling rate (Hz)')
 
-st.write('sample rate is', sample_rate)
+
+if sample_rate!= 0: 
+    st.write('sample rate is', sample_rate)
+else:
+    st.write('Enter Sample Rate')
+
+ 
