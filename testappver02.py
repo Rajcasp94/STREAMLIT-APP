@@ -78,6 +78,7 @@ while user_input == 0:
         
     
 if user_input == 1:
+    st.write(df)
     sample_rate = st.number_input('Sampling rate (Hz)')
 
 
