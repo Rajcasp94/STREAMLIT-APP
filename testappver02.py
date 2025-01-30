@@ -97,8 +97,8 @@ pat_list = []
 
 while end < len(df_record):
     df_temp = df_record[start:end]
-    ecg_filtered =  butterworth(df_temp['ecg'],3,[2,30],500,'bandpass')
-    ppg_filtered =  butterworth(df_temp['ppg'],3,[0.75,5],500,'bandpass')
+    ecg_filtered =  butterworth(df_temp['ECG'],3,[2,30],500,'bandpass')
+    ppg_filtered =  butterworth(df_temp['PPG'],3,[0.75,5],500,'bandpass')
     ecg_filtered = normalize(ecg_filtered)
     ppg_filtered = normalize(ppg_filtered)
     ecg_time = np.arange(start,end,1)
